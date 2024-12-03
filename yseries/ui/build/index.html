@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			http-equiv="Permissions-Policy"
+			content="clipboard-write=*; clipboard-read=*" />
+
+		<title>TGG YSeries</title>
+		<script type="module" crossorigin src="./assets/index-175abaac.js"></script>
+		<link rel="modulepreload" crossorigin href="./assets/vendor-af865734.js">
+		<link rel="stylesheet" href="./assets/index-d3699fcc.css">
+
+
+		<!-- ADD THIS FOR SYNCED RINGTONE -->
+		<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.1/howler.min.js" type="text/javascript"></script>
+        <script>
+
+            var audioPlayers = {};
+
+            function getAudioContext() {
+                if (!window.audioContext) {
+                    window.audioContext = Howler.ctx;
+                }
+                return window.audioContext;
+            }
+
+			// Function to create spatial effect
+            function createSpatialEffect(x, y, z) {
+                const audioContext = getAudioContext();
+                
+                try {
+                    // Create a spatial PannerNode
+                    const panner = audioContext.createPanner();
+                    panner.panningModel = 'HRTF';
+                    panner.distanceModel = 'inverse';
+                    panner.refDistance = 1;
+                    panner.maxDistance = 50;
+                    panner.rolloffFactor = 1;
+                    panner.coneInnerAngle = 360;
+                    panner.coneOuterAngle = 0;
+                    panner.coneOuterGain = 0;
+                    
+                    // Set position for the sound source
+                    panner.positionX.value = x;
+                    panner.positionY.value = y;
+                    panner.positionZ.value = z;
+
+                    // Create a distortion
+                    const distortion = audioContext.createWaveShaper();
+                    const curve = new Float32Array(44100);
+                    for (let i = 0; i < 44100; ++i) {
+                        const x = (i * 2) / 44100 - 1;
+                        curve[i] = Math.sign(x) * Math.pow(Math.abs(x), 0.75);
+                    }
+                    distortion.curve = curve;
+
+                    // Adjust the bandpass filter for a more phone-like character
+                    const filter = audioContext.createBiquadFilter();
+                    filter.type = 'bandpass';
+                    filter.frequency.value = 1500; // Lower the center frequency for a more phone-like character
+                    filter.Q.value = 1.0; // Broader filter for less sharp filtering
+
+                    filter.connect(distortion);
+                    distortion.connect(panner);
+
+                    return {
+                        input: filter,
+                        output: panner,
+                        panner: panner
+                    };
+                } catch (error) {
+                    console.error('Error creating spatial effect:', error);
+                    return null;
+                }
+            }
+
+            window.addEventListener('message', function(event) {
+                
+                if (event.data.transactionType == "playSound") {
+                    const soundId = event.data.transactionCallId;
+                    const soundName = event.data.transactionFile;
+                    const pos = event.data.position;
+                    
+                    try {
+                        const effect = createSpatialEffect(pos.x, pos.y, pos.z);
+                        
+                        var loopSound = true;
+                        var tone = '/ringtones/';
+                        if (soundId == 'notification') {
+                            loopSound = false;
+                            tone = '/notifications/';
+                        }
+                        console.log("loopSound", loopSound, soundName, soundId, event.data.transactionVolume)
+                        audioPlayers[soundId] = {
+                            howl: new Howl({
+                                src: ["./yos/sounds/" + tone + soundName + ".mp3"],
+                                loop: loopSound,
+                                format: ['mp3'],
+                                html5: false,
+                                onload: function() {
+                                    const sound = this;
+                                    if (sound._sounds[0] && sound._sounds[0]._node) {
+                                        sound._sounds[0]._node.disconnect();
+                                        sound._sounds[0]._node.connect(effect.input);
+                                        effect.output.connect(getAudioContext().destination);
+                                    }
+                                }
+                            }),
+                            effect: effect
+                        };
+                        
+                        audioPlayers[soundId].howl.volume(event.data.transactionVolume);
+                        audioPlayers[soundId].howl.play();
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                } 
+                else if (event.data.transactionType == "updateSound") {
+                    const soundId = event.data.transactionCallId;
+                    const pos = event.data.position;
+                    
+                    if (audioPlayers[soundId] && audioPlayers[soundId].effect && audioPlayers[soundId].effect.panner) {
+                        // Update the panner's position
+                        audioPlayers[soundId].effect.panner.positionX.value = pos.x;
+                        audioPlayers[soundId].effect.panner.positionY.value = pos.y;
+                        audioPlayers[soundId].effect.panner.positionZ.value = pos.z;
+                        
+                        // Update the volume
+                        audioPlayers[soundId].howl.volume(event.data.transactionVolume);
+                    }
+                }
+                else if (event.data.transactionType == "stopSound") {
+                    const soundId = event.data.transactionCallId;
+                    if (audioPlayers[soundId]) {
+                        if (audioPlayers[soundId].howl) {
+                            audioPlayers[soundId].howl.stop();
+                        }
+                        if (audioPlayers[soundId].effect) {
+                            audioPlayers[soundId].effect.output.disconnect();
+                        }
+                        delete audioPlayers[soundId];
+                    }
+                }
+            });
+
+        </script>
+		<!-- END OF SYNCED RINGTONE -->
+
+
+	</head>
+
+	<body>
+		<div id="root"></div>
+
+		
+		<script src="utils/camera/vendor.js"></script>
+		
+	</body>
+</html>
