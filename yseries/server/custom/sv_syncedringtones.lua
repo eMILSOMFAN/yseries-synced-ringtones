@@ -42,7 +42,6 @@ RegisterServerEvent('yseries:server:send-synced-notification', function(sound, p
     local src = source
     
     local imei = exports.yseries:GetPhoneImeiByPhoneNumber(phoneNr)
-    print("send-synced-notification", sound, phoneNr, imei)
 
     -- Return if phone is on do not disturb
     local do_not_disturb = MySQL.Sync.fetchScalar('SELECT do_not_disturb FROM yphone_settings WHERE phone_imei = ? ', {imei})

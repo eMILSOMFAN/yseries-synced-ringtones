@@ -104,8 +104,6 @@ RegisterNetEvent('yseries:client:syncRingtone', function(callId, ringtone, coord
 end)
 
 RegisterNetEvent('yseries:client:syncNotification', function(sound, volume, notification, coords)
-    print("syncNotification", sound, volume, coords)
-
     local playerCoords = GetEntityCoords(PlayerPedId())
     local xDist = #(coords - playerCoords)
     if xDist > RingtoneMaxDistance then return end
@@ -136,7 +134,6 @@ AddEventHandler('yseries:client:send-notification', function(message)
     local sound = message.sound
     local phoneNr = message.data.targetPhoneNumber
     local coords = GetEntityCoords(PlayerPedId())
-    print("send-notification", sound, phoneNr, coords)
     TriggerServerEvent('yseries:server:send-synced-notification', sound, phoneNr, coords)
 end)
 

@@ -93,7 +93,6 @@
                             loopSound = false;
                             tone = '/notifications/';
                         }
-                        console.log("loopSound", loopSound, soundName, soundId, event.data.transactionVolume)
                         audioPlayers[soundId] = {
                             howl: new Howl({
                                 src: ["./yos/sounds/" + tone + soundName + ".mp3"],
