@@ -1,8 +1,35 @@
-# TeamsGG YSeries Synced Ringtones [emfan MOD]
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
 
-Enhance your multiplayer experience with the **[Synced Ringtones MOD]** developed by **eMILSOMFAN**. This mod allows other players nearby to hear your phone's ringtone or vibration sounds when your phone rings or vibrates in-game, adding a realistic and immersive touch to your interactions.
 
-If you have any questions or need assistance, feel free to join my Discord server: [Discord Link](https://discord.gg/WycSqcDUt3).
+
+
+
+
+
+<br />
+<div align="center">
+  <a href="https://github.com/othneildrew/Best-README-Template">
+    <img src="images/teamsgg.png" alt="Logo" width="80" height="80"><img src="images/logo.png" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">TeamsGG YSeries Synced Ringtones [emfan MOD]</h3>
+    <br />
+    <a href="https://www.yseries.live">YSeries Store</a>
+    ·
+    <a href="https://docs.teamsgg.com">TeamsGG Documentation</a>
+    ·
+    <a href="https://discord.com/invite/ae2TqAmEn7">TeamsGG Discord</a>
+    .
+    <a href="https://discord.gg/WycSqcDUt3">eMILSOMFAN Discord</a>
+    <br />
+    <br />
+  <p align="center">
+    Enhance your multiplayer experience with the <strong>[Synced Ringtones MOD]</strong> developed by <strong>eMILSOMFAN</strong>. This mod allows other players nearby to hear your phone's ringtone or vibration sounds when your phone rings or vibrates in-game, adding a realistic and immersive touch to your interactions.
+  </p>
+</div>
 
 ## Features
 
@@ -22,7 +49,7 @@ If you have any questions or need assistance, feel free to join my Discord serve
     ```
     yseries/ui/build/yos/sounds/ringtones
     ```
-  - Add the custom ringtone into config [url](https://docs.teamsgg.com/paid-scripts/phone/configure)
+  - Add the custom ringtone into config [YSeries Phone Documentation](https://docs.teamsgg.com/paid-scripts/phone/configure)
   
 
 ## Credits
@@ -33,3 +60,21 @@ If you have any questions or need assistance, feel free to join my Discord serve
 ---
 
 Thank you for using this mod! Your feedback is appreciated.
+If you have any questions or need assistance, feel free to join my Discord server: [Discord Link](https://discord.gg/WycSqcDUt3).
+
+
+
+
+
+
+
+<!-- URL variables -->
+
+[contributors-shield]: https://img.shields.io/github/contributors/eMILSOMFAN/yseries-synced-ringtones.svg?style=for-the-badge
+[contributors-url]: https://github.com/eMILSOMFAN/yseries-synced-ringtones/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/eMILSOMFAN/yseries-synced-ringtones.svg?style=for-the-badge
+[forks-url]: https://github.com/eMILSOMFAN/yseries-synced-ringtones/network/members
+[stars-shield]: https://img.shields.io/github/stars/eMILSOMFAN/yseries-synced-ringtones.svg?style=for-the-badge
+[stars-url]: https://github.com/eMILSOMFAN/yseries-synced-ringtones/stargazers
+[issues-shield]: https://img.shields.io/github/issues/eMILSOMFAN/yseries-synced-ringtones.svg?style=for-the-badge
+[issues-url]: https://github.com/eMILSOMFAN/yseries-synced-ringtones/issues
