@@ -48,26 +48,23 @@
                     panner.positionY.value = y;
                     panner.positionZ.value = z;
 
-                    // Create a distortion
-                    const distortion = audioContext.createWaveShaper();
-                    const curve = new Float32Array(44100);
-                    for (let i = 0; i < 44100; ++i) {
-                        const x = (i * 2) / 44100 - 1;
-                        curve[i] = Math.sign(x) * Math.pow(Math.abs(x), 0.75);
-                    }
-                    distortion.curve = curve;
+                    // Create filters for frequency shaping
+                    const lowFilter = audioContext.createBiquadFilter();
+                    lowFilter.type = 'lowshelf';
+                    lowFilter.frequency.value = 300;
+                    lowFilter.gain.value = -50; // Increased bass reduction from -6 to -12
 
-                    // Adjust the bandpass filter for a more phone-like character
-                    const filter = audioContext.createBiquadFilter();
-                    filter.type = 'bandpass';
-                    filter.frequency.value = 1500; // Lower the center frequency for a more phone-like character
-                    filter.Q.value = 1.0; // Broader filter for less sharp filtering
+                    const highFilter = audioContext.createBiquadFilter();
+                    highFilter.type = 'highshelf';
+                    highFilter.frequency.value = 2000;
+                    highFilter.gain.value = -3; // Keeping the same high frequency reduction
 
-                    filter.connect(distortion);
-                    distortion.connect(panner);
+                    // Connect the filters in series
+                    lowFilter.connect(highFilter);
+                    highFilter.connect(panner);
 
                     return {
-                        input: filter,
+                        input: lowFilter,
                         output: panner,
                         panner: panner
                     };

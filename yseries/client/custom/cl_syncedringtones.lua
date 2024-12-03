@@ -1,5 +1,5 @@
 local RingtoneMaxDistance = 50      -- How many units away from the player the ringtone can be heard, the sound is still dynamic though but it won't trigger on client further away than this distance to improve performance
-local volumeModifier = 100          -- How much the volume is reduced by distance, Higher number = less volume at a distance
+local volumeModifier = 5          -- How much the volume is reduced by distance, Higher number = less volume at a distance
 
 local syncedRingtones = {}
 
